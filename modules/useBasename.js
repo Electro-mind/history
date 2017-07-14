@@ -4,16 +4,15 @@ import { parsePath } from './PathUtils'
 const useBasename = (createHistory) =>
   (options = {}) => {
     const history = createHistory(options)
-    const { basename } = options
 
     const addBasename = (location) => {
       if (!location)
         return location
 
-      if (basename && location.basename == null) {
-        if (location.pathname.toLowerCase().indexOf(basename.toLowerCase()) === 0) {
-          location.pathname = location.pathname.substring(basename.length)
-          location.basename = basename
+      if (options.basename && location.basename == null) {
+        if (location.pathname.toLowerCase().indexOf(options.basename.toLowerCase()) === 0) {
+          location.pathname = location.pathname.substring(options.basename.length)
+          location.basename = options.basename
 
           if (location.pathname === '')
             location.pathname = '/'
@@ -26,12 +25,12 @@ const useBasename = (createHistory) =>
     }
 
     const prependBasename = (location) => {
-      if (!basename)
+      if (!options.basename)
         return location
 
       const object = typeof location === 'string' ? parsePath(location) : location
       const pname = object.pathname
-      const normalizedBasename = basename.slice(-1) === '/' ? basename : `${basename}/`
+      const normalizedBasename = options.basename.slice(-1) === '/' ? options.basename : `${options.basename}/`
       const normalizedPathname = pname.charAt(0) === '/' ? pname.slice(1) : pname
       const pathname = normalizedBasename + normalizedPathname
 
